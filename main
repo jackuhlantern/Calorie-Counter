@@ -1,0 +1,117 @@
+user_body = "" #empty variable to be assigned to Body class
+#global variable counters; calories, fat, sugar, and protein, respectively
+cal_count = 0
+fat = 0
+sug = 0
+prot = 0
+
+#add stuff here
+
+#for the user's body type
+class Body(object):
+    def __init__(self, age, sex, weight, metabolism, activity):
+        self.age = age
+        self.sex = sex
+        self.weight = weight
+        self.bmr = metabolism
+        self.actv = activity
+#mostly for debugging
+    def check(self):
+        if self.sex == "male":
+            x = "male"
+        else:
+            x = "female"
+        print("You are a %s year old %s who weighs %s pounds." % (self.age, x, self.weight))
+#let's user update their age, sex, weight, etc.
+    def change(self, varname, new):
+        self.varname = varname
+        self.new = new
+        if self.varname == "age":
+            self.age = new
+        elif self.varname == "sex":
+            self.sex = new
+        elif self.varname == "weight":
+            self.weight = new
+        elif self.varname == "metabolism":
+            self.bmr = new
+        elif self.varname == "activity":
+            self.actv = new
+        else:
+            pass
+
+    def bmr_calc(self):
+        if self.bmr == 0 and self.sex == "F":
+            self.bmr = self.weight * 10
+        elif self.bmr == 0 and self.sex == "M":
+            self.bmr = self.weight * 11
+        print("BMR: %s" % (self.bmr))
+
+    def recommend(self):
+        base = 0
+        if self.actv == "moderate":
+            base = self.weight * 15
+        elif self.actv == "sedentary":
+            base = self.weight * 13
+
+        if self.sex == "M":
+            base += base * .10
+
+        global rec
+        rec = base
+        print("Your recommended calorie intake is %s" % (rec))
+
+class Food(object):
+    def __init__(self, name, calories, fat, sugars, protein):
+        self.name = name
+        self.cal = calories
+        self.fat = fat
+        self.sug = sugars
+        self.pro = protein
+
+    def eat(self, amount):
+        self.amount = amount
+        global cal_count
+        cal_count += self.cal * self.amount
+        global rec
+        print("You've consumed %s calories out of %s (recommended) today." % (cal_count, rec))
+
+class Fruit(Food):
+    def __init__(self, name, calories, fat, sugars, protein):
+        Food.__init__(self, name, calories, fat, sugars, protein)
+
+    def addnew(self, name):
+        self.name = name
+        self.name = Fruit()
+
+class Veg(Food):
+    def __init__(self, name, calories, fat, sugars, protein):
+        Food.__init__(self, name, calories, fat, sugars, protein)
+
+#def check_fat():
+#    print("You've consumed %s grams of fat today." % (fat))
+
+me = Body(21, "M", 150, 0, "sedentary")
+me.bmr_calc()
+me.recommend()
+
+#fruits
+apple = Fruit("apple", 130, 0, 25, 1)
+avocado = Fruit("avocado", 50, 4.5, 0, 1)
+banana = Fruit("banana", 100, 0, 19, 1)
+cantaloupe = Fruit("cantaloupe", 50, 0, 11, 1)
+grapefruit = Fruit("grapefruit", 60, 0, 11, 1)
+grapes = Fruit("grapes", 90, 0, 20, 0)
+kiwi = Fruit("kiwi", 90, 1, 13, 1)
+lemon = Fruit("lemon", 15, 0, 2, 0)
+
+#vegetables
+asparagus = Veg("asparagus", 20, 0, 2, 2)
+bell_pepper = Veg("bell pepper", 25, 0, 4, 1)
+brocolli = Veg("brocolli", 0.5, 2, 4)
+carrot = Veg("carrot", 30, 5, 1)
+cauliflower = Veg("cauliflower", 25, 2, 2)
+celery = Veg("celery", 15, 2, 0)
+cucumber = Veg("cucumber", 10, 1, 1)
+green_beans = ("green beans", 20, 2, 1)
+cabbage = ("cabbage", 25, 3, 1)
+green_onion = ("green onion", 10, 1, 0)
